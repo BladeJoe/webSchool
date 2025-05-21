@@ -5,11 +5,27 @@ const next = document.querySelector('.next')
 const dots = document.querySelectorAll('.pagination div')
 
 let index = 0
-const visibleSlides = 4
-const maxIndex = slides.length - visibleSlides
+
+function getSlideWidth() {
+    const width = window.innerWidth
+    if (width <= 768) return 315
+    return 287
+}
+
+function getVisibleSlides() {
+    const width = window.innerWidth
+    if (width <= 375) return 1
+    if (width <= 768) return 3
+    return 4
+}
 
 function updateCarousel() {
-    track.style.transform = `translateX(-${index * (100 / visibleSlides)}%)`
+    const slideWidth = getSlideWidth()
+    const visibleSlides = getVisibleSlides()
+    const maxIndex = slides.length - visibleSlides
+    index = Math.min(index, maxIndex)
+    track.style.transform = `translateX(-${(index * 16) + index * slideWidth
+        }px)`
     dots.forEach(dot => dot.classList.remove('active'))
     dots[index]?.classList.add('active')
 }
@@ -20,6 +36,8 @@ prev.onclick = () => {
 }
 
 next.onclick = () => {
+    const visibleSlides = getVisibleSlides()
+    const maxIndex = slides.length - visibleSlides
     index = Math.min(maxIndex, index + 1)
     updateCarousel()
 }
@@ -31,8 +49,12 @@ dots.forEach((dot, i) => {
     }
 })
 
+window.addEventListener('resize', updateCarousel)
+
 updateCarousel()
 setInterval(() => {
-    index = (index >= maxIndex) ? 0 : index + 1
+    const visibleSlides = getVisibleSlides()
+    const maxIndex = slides.length - visibleSlides
+    index = index >= maxIndex ? 0 : index + 1
     updateCarousel()
-}, 2000)
+}, 30000)
