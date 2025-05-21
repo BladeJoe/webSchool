@@ -38,8 +38,6 @@ function renderSubcategories(items) {
     items.forEach(item => {
         const el = document.createElement("a");
         el.innerHTML = `${item} <span>&#8250;</span>`;
-        el.href = encodeURIComponent(item) + ".html";
-
         subcategoryList.appendChild(el);
     });
 }

@@ -402,8 +402,13 @@ a {
     line-height: 24px;
 }
 
+
+
 /* courses */
-.course-directions h2 {
+
+.courses {}
+
+.courses h2 {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 24px;
@@ -429,6 +434,7 @@ a {
 .categories button {
     background: none;
     border: none;
+    text-decoration: underline 1px solid;
     text-align: left;
     font-size: 16px;
     font-weight: 500;
@@ -467,6 +473,47 @@ a {
     background-color: var(--color-background);
     color: var(--color-link-hover);
 }
+
+@media (max-width: 1440px) {
+    .categories {
+        height: none;
+        flex-direction: row;
+        gap: 30px;
+        width: 100%;
+        margin: 10px 0;
+        overflow-x: scroll;
+        height: auto;
+    }
+
+    .course-layout {
+        max-height: none;
+        flex-direction: column;
+    }
+
+    .categories button {
+        padding: 10px;
+        border-radius: 999px;
+        color: var(--color-link);
+        height: 40px;
+        white-space: nowrap;
+
+    }
+
+    .categories button.active {
+        background-color: var(--color-link-active);
+        color: var(--color-border);
+    }
+
+    .subcategories {
+        column-count: 2;
+        column-gap: auto;
+        padding: 10px;
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {}
+
 
 /* schools */
 .schools {
