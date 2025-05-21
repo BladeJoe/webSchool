@@ -324,11 +324,11 @@ a {
 
     .hero-img {
         width: 878px;
-        bottom: -120px;
+        bottom: -50px;
     }
 
     .hero-contents {
-        padding-top: 100px;
+        padding-top: 10px;
     }
 }
 
