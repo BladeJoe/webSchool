@@ -90,7 +90,7 @@ categories.forEach((cat, i) => {
     btn.addEventListener('click', () => {
         document.querySelectorAll('.course-categories button').forEach(b => b.classList.remove('active'))
         btn.classList.add('active')
-        // TODO: filter/render courses by category if you ever feel like it
+        // TODO: filter/render
     })
 
     li.appendChild(btn)
