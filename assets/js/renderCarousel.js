@@ -74,9 +74,40 @@ prevVisibleSlides = getVisibleSlides()
 createPagination()
 updateCarousel()
 
-setInterval(() => {
+let autoSlide = setInterval(() => {
     const visibleSlides = getVisibleSlides()
     const maxIndex = slides.length - visibleSlides
     index = index >= maxIndex ? 0 : index + 1
     updateCarousel()
-}, 1500)
+}, 3000)
+
+
+
+
+let startX = 0
+let endX = 0
+const threshold = 50
+
+track.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX
+})
+
+track.addEventListener('touchmove', e => {
+    endX = e.touches[0].clientX
+})
+
+
+track.addEventListener('touchend', () => {
+    const diff = endX - startX
+    if (Math.abs(diff) > threshold) {
+        if (diff > 0) prev.onclick()
+        else next.onclick()
+    }
+    clearInterval(autoSlide)
+    autoSlide = setInterval(() => {
+        const visibleSlides = getVisibleSlides()
+        const maxIndex = slides.length - visibleSlides
+        index = index >= maxIndex ? 0 : index + 1
+        updateCarousel()
+    }, 3000)
+})
