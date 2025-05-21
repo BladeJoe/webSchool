@@ -11,6 +11,7 @@
     --color-border: #ededed;
     --color-filter-icon-bg: #fff;
     --color-filter-icon-hover-bg: #ededed;
+    --size-debug: 606px;
 }
 
 /* fonts */
@@ -371,22 +372,24 @@ a {
 
 .advantage .item {
     padding: 16px;
-    width: 381px;
+    width: 350px;
     height: 254px;
     margin-bottom: 12px;
 }
 
 .advantage .inner-wrapper {
     display: flex;
-    align-items: start;
+    flex-direction: row;
+    width: 300px;
+    align-items: center;
     justify-content: start;
+    margin: 10px 0;
     gap: 16px;
 }
 
 .advantage .inner-wrapper .title {
     max-width: 155px;
     justify-content: start;
-    text-align: left;
     align-items: start;
     margin-bottom: 0;
 
@@ -394,7 +397,14 @@ a {
 
 .advantage .inner-wrapper .icon {
     max-width: 155px;
+    word-break: keep-all;
+}
 
+.advantage .inner-title {
+    font-size: 18px;
+    max-width: 150px;
+    margin-bottom: 0;
+    white-space: normal;
 }
 
 .advantage .inner-wrapper p {
@@ -402,6 +412,21 @@ a {
     line-height: 24px;
 }
 
+@media (max-width:768px) {
+    .advantage .item {
+        max-width: 375px;
+        width: auto;
+    }
+
+
+    .advantage .inner-wrapper {
+        width: auto;
+    }
+
+    .advantage .inner-title {
+        max-width: 2000px;
+    }
+}
 
 
 /* courses */
@@ -545,6 +570,7 @@ a {
 /* sponsors */
 .sponsors {
     background-color: var(--color-background-primary);
+    padding: 0;
     width: 100%;
 }
 
@@ -566,8 +592,8 @@ a {
 .carousel-track {
     display: flex;
     gap: 16px;
-    padding: 22px;
-
+    padding: 16px;
+    padding-left: 22px;
     transition: transform 0.3s ease;
 }
 
@@ -623,16 +649,50 @@ a {
 }
 
 @media (max-width: 1280px) {
+
     .carousel {
-        max-width: 860px;
+        max-width: 924px;
         margin: 0 auto;
+    }
+
+    .carousel-track {
+
+        padding-left: 16px;
+    }
+
+    .carousel-wrapper {
+        max-width: 924px;
     }
 }
 
-@media (max-width: 768px) and (min-width: 376px) {
+@media (max-width: 1024px) {
+
+    .carousel {
+        max-width: 624px;
+        margin: 0 auto;
+    }
+
+    .carousel-track {
+        padding-left: 16px;
+    }
+
+    .carousel-wrapper {
+        max-width: 624px;
+    }
+}
+
+@media (max-width: 928px) and (min-width: 376px) {
     .carousel-slide {
         width: 315px;
         height: 270px;
+    }
+
+    .carousel {
+        max-width: 345px;
+    }
+
+    .carousel-wrapper {
+        max-width: 345px;
     }
 }
 

@@ -2,21 +2,39 @@ const track = document.querySelector('.carousel-track')
 const slides = document.querySelectorAll('.carousel-slide')
 const prev = document.querySelector('.prev')
 const next = document.querySelector('.next')
-const dots = document.querySelectorAll('.pagination div')
+const pagination = document.querySelector('.pagination')
 
 let index = 0
+let dots = []
+let prevVisibleSlides = 0
 
 function getSlideWidth() {
-    const width = window.innerWidth
-    if (width <= 768) return 315
-    return 287
+    return window.innerWidth <= 928 ? 315 : 287
 }
 
 function getVisibleSlides() {
-    const width = window.innerWidth
-    if (width <= 375) return 1
-    if (width <= 768) return 3
+    if (window.innerWidth <= 959) return 1
+    if (window.innerWidth <= 1024) return 2
+    if (window.innerWidth <= 1280) return 3
     return 4
+}
+
+function createPagination() {
+    pagination.innerHTML = ''
+    const visibleSlides = getVisibleSlides()
+    const totalPages = Math.max(1, slides.length - visibleSlides + 1)
+    dots = []
+
+    for (let i = 0; i < totalPages; i++) {
+        const dot = document.createElement('div')
+        dot.classList.add(`page-${i + 1}`)
+        dot.onclick = () => {
+            index = i
+            updateCarousel()
+        }
+        pagination.appendChild(dot)
+        dots.push(dot)
+    }
 }
 
 function updateCarousel() {
@@ -24,10 +42,18 @@ function updateCarousel() {
     const visibleSlides = getVisibleSlides()
     const maxIndex = slides.length - visibleSlides
     index = Math.min(index, maxIndex)
-    track.style.transform = `translateX(-${(index * 16) + index * slideWidth
-        }px)`
+    track.style.transform = `translateX(-${index * (slideWidth + 16)}px)`
     dots.forEach(dot => dot.classList.remove('active'))
     dots[index]?.classList.add('active')
+}
+
+function handleResize() {
+    const currentVisibleSlides = getVisibleSlides()
+    if (currentVisibleSlides !== prevVisibleSlides) {
+        prevVisibleSlides = currentVisibleSlides
+        createPagination()
+    }
+    updateCarousel()
 }
 
 prev.onclick = () => {
@@ -42,16 +68,12 @@ next.onclick = () => {
     updateCarousel()
 }
 
-dots.forEach((dot, i) => {
-    dot.onclick = () => {
-        index = i
-        updateCarousel()
-    }
-})
+window.addEventListener('resize', handleResize)
 
-window.addEventListener('resize', updateCarousel)
-
+prevVisibleSlides = getVisibleSlides()
+createPagination()
 updateCarousel()
+
 setInterval(() => {
     const visibleSlides = getVisibleSlides()
     const maxIndex = slides.length - visibleSlides
