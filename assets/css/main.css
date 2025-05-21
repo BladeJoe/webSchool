@@ -11,7 +11,7 @@
     --color-border: #ededed;
     --color-filter-icon-bg: #fff;
     --color-filter-icon-hover-bg: #ededed;
-    --size-debug: 606px;
+    --color-skrikethrough: #b5b5b5;
 }
 
 /* fonts */
@@ -23,21 +23,32 @@
 }
 
 @font-face {
-    font-family: 'FD Elliot pro regular';
+    font-family: 'FS Elliot pro regular';
     src: url('../fonts/FS_Elliot_ProHeavy.woff2') format('woff2');
 }
 
 @font-face {
-    font-family: 'FD Elliot pro heavy';
+    font-family: 'FS Elliot pro bold';
+    src: url('../fonts/FS-Elliot-ProBold.woff') format('woff');
+}
+
+@font-face {
+    font-family: 'FS Elliot pro heavy';
     src: url('../fonts/FS_Elliot_ProRegular.woff') format('woff');
 }
 
 @font-face {
     font-family: "Lisboa Heavy";
     font-style: normal;
-    font-weight: 400;
+    font-weight: bold;
     src: url('../fonts/LisboaHeavy.woff2') format('woff2'),
         url('../fonts/LisboaHeavy.woff') format('woff');
+}
+
+* {
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+    scrollbar-width: thin;
 }
 
 body {
@@ -357,10 +368,9 @@ a {
 
 .advantage,
 .advantage pre {
-    font-family: 'FD Elliot pro heavy';
+    font-family: 'FS Elliot pro heavy';
     background-color: var(--color-background-primary);
 }
-
 
 .advantage .title {
     margin-bottom: 0;
@@ -369,6 +379,7 @@ a {
     font-weight: bold;
     text-align: center;
 }
+
 
 .advantage .item {
     padding: 16px;
@@ -386,6 +397,7 @@ a {
     margin: 10px 0;
     gap: 16px;
 }
+
 
 .advantage .inner-wrapper .title {
     max-width: 155px;
@@ -429,10 +441,10 @@ a {
 }
 
 
-/* courses */
+/* course-links */
 
 
-.courses h2 {
+.course-links h2 {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 24px;
@@ -710,14 +722,277 @@ a {
 
 
 
-/* popular */
-.popular {
+/* course */
+.course {
     background-color: var(--color-background-primary);
 
 }
 
+.course-categories {
+    max-width: 1116px;
+    margin: 0 auto;
+}
+
+.course-categories ul {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    white-space: nowrap;
+    gap: 20px;
+    width: 100%;
+    margin: 10px 0;
+    overflow-x: scroll;
+    height: auto;
+}
+
+.course-categories ul li button {
+    white-space: nowrap;
+    padding: 10px 20px;
+    background-color: var(--color-background-primary);
+    border-radius: 99px;
+    border: 0;
+    font-family: 'FS Elliot Pro', sans-serif;
+
+    margin-bottom: 2px;
+}
+
+.course-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.course-item {
+    padding: 25px 43px;
+    max-width: 1195px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    align-items: center;
+    flex-direction: row;
+    max-height: 150px;
+    box-shadow: 0 4px 26px rgba(203, 203, 203, 0.25);
+}
 
 
+.course .square-wrapper {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+    max-width: 710px;
+}
+
+.course-course div {
+    display: flex;
+    flex-direction: column;
+}
+
+.course .old-price {
+    text-decoration: line-through;
+    line-height: 30.6px;
+    color: var(--color-skrikethrough);
+}
+
+.course .title,
+.small,
+.course .current-price {
+    font-family: 'FS Elliot Pro', sans-serif;
+    font-weight: bold;
+}
+
+.course .compare {
+    font-family: 'FS Elliot Pro', sans-serif;
+    line-height: 30.6px;
+    font-size: 10px;
+}
+
+.course .review,
+.course .monthly-price {
+    font-family: 'FS Elliot Pro', sans-serif;
+    color: var(--color-link-active);
+    line-height: 30.6px;
+}
+
+.course .old-price,
+.course .review,
+.course .monthly-price,
+.course .currency,
+.course .small,
+.course .time {
+    line-height: 30.6px;
+    font-size: 12px;
+}
+
+.course .time img {
+    margin-right: 10px;
+}
+
+.course .time {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: 'FS Elliot Pro', sans-serif;
+    justify-content: center;
+    font-weight: bold;
+    line-height: inherit;
+    max-width: 90px;
+}
+
+.course .compare {
+    color: var(--color-link-current);
+}
+
+.course .details {
+    display: flex;
+    justify-content: center;
+    align-items: start;
+    flex-direction: column;
+}
+
+.course .details .small {
+    display: flex;
+    gap: 18px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+}
+
+.course .inner-wrapper {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+    align-items: center;
+}
+
+.course .inner-wrapper a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+}
+
+.course .btn {
+    border-radius: 999px;
+    width: 130px;
+    padding: 10px 20px;
+    align-items: center;
+    font-family: 'FS Elliot Pro', sans-serif;
+    font-weight: bold;
+    border: none;
+}
+
+.course .btn.secondary {
+    border: 1px solid var(--color-link);
+}
+
+.course .btn:hover {
+    background-color: var(--color-background);
+    color: var(--color-link-active);
+
+}
+
+.course .active {
+    background-color: var(--color-link-active);
+    color: var(--color-background-primary);
+}
+
+.course a:hover {
+    color: var(--color-link-active);
+}
+
+@media (max-width: 1024px) {
+
+    .course .time {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+
+
+}
+
+@media (max-width: 860px) {
+    .course .square-wrapper div {
+        display: flex;
+        justify-content: center;
+        align-items: start;
+        flex-direction: column;
+        padding: 10px 10px;
+        height: 120px;
+    }
+
+    .course .time {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center !important;
+        gap: 10px;
+        max-width: 130px;
+    }
+
+    .course .time img {
+        margin: 0;
+        margin-right: 10px;
+    }
+
+    .course-item {
+        max-width: 345px;
+        max-height: 381px;
+        padding: 20px 30px;
+        flex-direction: column;
+    }
+
+    .course .title {
+        width: 100%;
+        gap: 4px;
+    }
+
+    .course .jobtitle {
+        display: flex;
+        flex-direction: row;
+        margin-right: auto;
+        gap: 10px;
+        font-size: 16px;
+    }
+
+    .course .square-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        justify-content: space-between;
+        row-gap: 10px;
+    }
+
+    .course .square-wrapper .title {
+        text-align: left;
+    }
+
+
+
+    .course .inner-wrapper {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: auto;
+        gap: 10px;
+        justify-items: center;
+    }
+
+    .course .inner-wrapper .compare {
+        grid-column: span 2;
+        justify-self: center;
+    }
+
+
+    .course .compare {
+        margin: 0 auto;
+    }
+
+}
+
+@media (max-width: 768px) {}
 
 /* breadcrubms*/
 .breadcrumbs-link {

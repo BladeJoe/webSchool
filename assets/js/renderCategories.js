@@ -1,12 +1,12 @@
-const data = {
+const categoryData = {
     "Программирование": [
-        "Все курсы по программированию", "Python-разработка", "Web-разработка", "Мобильная разработка",
-        "JavaScript-разработка", "Java-разработка", "Разработка игр", "Создание сайтов",
-        "Системное администрирование", "QA-тестирование", "Android-разработка", "Управление разработкой и IT",
-        "Frontend-разработка", "Разработка игр на Unity", "Разработка на C#", "PHP-разработка",
-        "DevOps", "IOS-разработка", "Верстка на HTML/CSS", "Разработка на C++",
-        "Разработка игр на Unreal Engine", "Разработка на Kotlin", "Информационная безопасность",
-        "Golang-разработка", "Разработка на Swift", "1C-разработка", "VR/AR разработка", "Фреймворк Laravel"
+        "Все курсы по программированию",//  "Python-разработка", "Web-разработка", "Мобильная разработка",
+        // "JavaScript-разработка", "Java-разработка", "Разработка игр", "Создание сайтов",
+        // "Системное администрирование", "QA-тестирование", "Android-разработка", "Управление разработкой и IT",
+        // "Frontend-разработка", "Разработка игр на Unity", "Разработка на C#", "PHP-разработка",
+        // "DevOps", "IOS-разработка", "Верстка на HTML/CSS", "Разработка на C++",
+        // "Разработка игр на Unreal Engine", "Разработка на Kotlin", "Информационная безопасность",
+        // "Golang-разработка", "Разработка на Swift", "1C-разработка", "VR/AR разработка", "Фреймворк Laravel"
     ],
     "Маркетинг": ["Digital маркетинг", "Контекстная реклама", "SEO", "Email маркетинг"],
     "Дизайн": ["UX/UI", "Графический дизайн", "Motion дизайн"],
@@ -16,52 +16,51 @@ const data = {
     "Контент-маркетинг": ["Копирайтинг", "SMM", "Продюсирование"]
 };
 
-const categoryList = document.getElementById("categoryList");
-const subcategoryList = document.getElementById("subcategoryList");
+const categoryButtonsContainer = document.getElementById("categoryList");
+const subcategoryLinksContainer = document.getElementById("subcategoryList");
 
-function renderCategories() {
-    const select = document.createElement("select");
-    select.classList.add("categories-select");
+function renderCategoryButtons() {
+    const categorySelect = document.createElement("select");
+    categorySelect.classList.add("categories-select");
 
-    Object.keys(data).forEach((category, index) => {
-        const btn = document.createElement("button");
-        btn.textContent = category;
-        if (index === 0) btn.classList.add("active");
+    Object.keys(categoryData).forEach((category, index) => {
+        const button = document.createElement("button");
+        button.textContent = category;
+        if (index === 0) button.classList.add("active");
 
-        btn.addEventListener("click", () => {
+        button.addEventListener("click", () => {
             document.querySelectorAll("#categoryList button").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            renderSubcategories(data[category]);
-            select.value = category;
+            button.classList.add("active");
+            renderSubcategoryLinks(categoryData[category]);
+            categorySelect.value = category;
         });
 
-        categoryList.appendChild(btn);
+        categoryButtonsContainer.appendChild(button);
 
         const option = document.createElement("option");
         option.value = category;
         option.textContent = category;
-        select.appendChild(option);
+        categorySelect.appendChild(option);
     });
 
-    select.addEventListener("change", () => {
-        document.querySelectorAll("#categoryList button").forEach(b => {
-            b.classList.toggle("active", b.textContent === select.value);
+    categorySelect.addEventListener("change", () => {
+        document.querySelectorAll("#categoryList button").forEach(button => {
+            button.classList.toggle("active", button.textContent === categorySelect.value);
         });
-        renderSubcategories(data[select.value]);
+        renderSubcategoryLinks(categoryData[categorySelect.value]);
     });
 
-    categoryList.parentNode.insertBefore(select, categoryList.nextSibling);
+    categoryButtonsContainer.parentNode.insertBefore(categorySelect, categoryButtonsContainer.nextSibling);
 }
 
-
-function renderSubcategories(items) {
-    subcategoryList.innerHTML = "";
-    items.forEach(item => {
-        const el = document.createElement("a");
-        el.innerHTML = `${item} <span>&#8250;</span>`;
-        subcategoryList.appendChild(el);
+function renderSubcategoryLinks(subcategories) {
+    subcategoryLinksContainer.innerHTML = "";
+    subcategories.forEach(subcategory => {
+        const link = document.createElement("a");
+        link.innerHTML = `${subcategory} <span>&#8250;</span>`;
+        subcategoryLinksContainer.appendChild(link);
     });
 }
 
-renderCategories();
-renderSubcategories(data[Object.keys(data)[0]]); 
+renderCategoryButtons();
+renderSubcategoryLinks(categoryData[Object.keys(categoryData)[0]]);
