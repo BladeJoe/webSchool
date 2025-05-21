@@ -20,18 +20,39 @@ const categoryList = document.getElementById("categoryList");
 const subcategoryList = document.getElementById("subcategoryList");
 
 function renderCategories() {
+    const select = document.createElement("select");
+    select.classList.add("categories-select");
+
     Object.keys(data).forEach((category, index) => {
         const btn = document.createElement("button");
         btn.textContent = category;
         if (index === 0) btn.classList.add("active");
+
         btn.addEventListener("click", () => {
             document.querySelectorAll("#categoryList button").forEach(b => b.classList.remove("active"));
             btn.classList.add("active");
             renderSubcategories(data[category]);
+            select.value = category;
         });
+
         categoryList.appendChild(btn);
+
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        select.appendChild(option);
     });
+
+    select.addEventListener("change", () => {
+        document.querySelectorAll("#categoryList button").forEach(b => {
+            b.classList.toggle("active", b.textContent === select.value);
+        });
+        renderSubcategories(data[select.value]);
+    });
+
+    categoryList.parentNode.insertBefore(select, categoryList.nextSibling);
 }
+
 
 function renderSubcategories(items) {
     subcategoryList.innerHTML = "";
