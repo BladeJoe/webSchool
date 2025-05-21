@@ -4,6 +4,7 @@ const prev = document.querySelector('.prev')
 const next = document.querySelector('.next')
 const pagination = document.querySelector('.pagination')
 const section = document.querySelector('.sponsors')
+const noScrollSection = document.querySelector('.carousel-wrapper')
 
 let index = 0
 let dots = []
@@ -117,8 +118,13 @@ track.addEventListener('mouseleave', onDragEnd)
 
 window.addEventListener('resize', handleResize)
 
-track.addEventListener('wheel', e => e.preventDefault(), { passive: false })
-track.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
+noScrollSection.addEventListener('wheel', e => {
+    e.preventDefault()
+    if (e.deltaY > 0 || e.deltaX > 0) moveNext()
+    else if (e.deltaY < 0 || e.deltaX < 0) movePrev()
+}, { passive: false })
+
+noScrollSection.addEventListener('touchmove', e => e.preventDefault(), { passive: false })
 
 prevVisibleSlides = getVisibleSlides()
 createPagination()
