@@ -6,3 +6,6 @@ checkbox.addEventListener('change', () => {
     checkbox.checked.toggle();
 
 });
+document.querySelectorAll('img').forEach(img => {
+    img.ondragstart = () => false
+})
