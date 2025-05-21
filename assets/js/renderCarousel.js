@@ -79,4 +79,4 @@ setInterval(() => {
     const maxIndex = slides.length - visibleSlides
     index = index >= maxIndex ? 0 : index + 1
     updateCarousel()
-}, 30000)
+}, 1500)
