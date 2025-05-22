@@ -22,6 +22,7 @@ const subcategoryLinksContainer = document.getElementById("subcategoryList");
 function renderCategoryButtons() {
     const categorySelect = document.createElement("select");
     categorySelect.classList.add("categories-select");
+    categorySelect.id = "categorySelect";
 
     Object.keys(categoryData).forEach((category, index) => {
         const button = document.createElement("button");
@@ -50,8 +51,13 @@ function renderCategoryButtons() {
         renderSubcategoryLinks(categoryData[categorySelect.value]);
     });
 
-    categoryButtonsContainer.parentNode.insertBefore(categorySelect, categoryButtonsContainer.nextSibling);
+    const label = document.createElement("label");
+    label.htmlFor = categorySelect.id;
+    label.appendChild(categorySelect);
+
+    categoryButtonsContainer.parentNode.insertBefore(label, categoryButtonsContainer.nextSibling);
 }
+
 
 function renderSubcategoryLinks(subcategories) {
     subcategoryLinksContainer.innerHTML = "";
