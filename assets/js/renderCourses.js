@@ -140,7 +140,7 @@ courseData.forEach(course => {
         </h4 >
         <div class="square-wrapper">
             <div>
-                <p class="title">${course.school}</p>
+                <p class="inner-title">${course.school}</p>
                 <p class="rating small">⭐ <span>${course.rating}</span></p>
                 <p class="review">Отзывы о школе<span> ${course.reviews_count}</span></p>
             </div>

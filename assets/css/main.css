@@ -132,8 +132,20 @@ p {
     line-height: 1.7;
 }
 
-*/ .flex {
+.flex {
     display: flex;
+}
+
+.title {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Lisboa Heavy";
+    font-weight: bold;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    width: 100%;
 }
 
 .flex-inline {
@@ -566,15 +578,6 @@ a {
     background-color: var(--color-white);
 }
 
-.advantage .title {
-    margin-bottom: 0;
-    padding: 52px 0;
-    font-family: "Lisboa Heavy";
-
-    font-weight: bold;
-    text-align: center;
-}
-
 
 .advantage .item {
     padding: 16px;
@@ -640,7 +643,7 @@ a {
 /* course-links */
 
 
-.course-links h2 {
+.course-links h3 {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 24px;
@@ -670,10 +673,12 @@ a {
 }
 
 .categories button {
+
     background: none;
     border: none;
     text-align: left;
     font-size: 16px;
+    font-family: 'FS Elliot Pro';
     font-weight: 500;
     cursor: pointer;
     color: var(--color-link);
@@ -682,7 +687,7 @@ a {
 
 .categories button.active {
     font-weight: bold;
-    background: var(--color-white);
+    background: var(--color-background);
 }
 
 .categories button:hover {
@@ -780,8 +785,6 @@ a {
 /* sponsors */
 .sponsors {
     background-color: var(--color-white);
-    padding: 0;
-    width: 100%;
 }
 
 .carousel-wrapper {
@@ -953,7 +956,24 @@ a {
     border-radius: 99px;
     border: 0;
     font-family: 'FS Elliot Pro', sans-serif;
+    border: none;
+    text-align: left;
+    font-size: 16px;
+    font-family: 'FS Elliot Pro';
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--color-link);
+    padding: 16px;
+}
 
+.course-categories ul li button.active {
+    font-weight: bold;
+    background: var(--color-background);
+}
+
+
+.course-categories ul li button:hover {
+    color: var(--color-link-hover);
 }
 
 .course-wrapper {
@@ -1008,7 +1028,7 @@ a {
     font-weight: bold;
 }
 
-.course .title,
+.course .inner-title,
 .small,
 .course .current-price {
     font-family: 'FS Elliot Pro', sans-serif;
@@ -1198,7 +1218,7 @@ a {
         flex-direction: column;
     }
 
-    .course .title {
+    .course .inner-title {
         width: 100%;
         gap: 4px;
     }
@@ -1221,7 +1241,7 @@ a {
         row-gap: 10px;
     }
 
-    .course .square-wrapper .title {
+    .course .square-wrapper .inner-title {
         text-align: left;
         font-size: 16px;
     }
@@ -1266,7 +1286,6 @@ a {
 /*   blog */
 
 .blog {
-    padding: 60px 0;
     background-color: var(--color-white);
 }
 
@@ -1334,15 +1353,6 @@ a {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-}
-
-.blog-card .title {
-    color: #333;
-    font-family: "Lisboa Heavy";
-    font-weight: normal;
-    font-size: 18px;
-    line-height: 24px;
-    margin-bottom: 15px;
 }
 
 .blog-card .card-footer {

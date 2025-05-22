@@ -58,6 +58,7 @@ function renderSubcategoryLinks(subcategories) {
     subcategories.forEach(subcategory => {
         const link = document.createElement("a");
         link.innerHTML = `${subcategory} <span>&#8250;</span>`;
+        link.href = "#";
         subcategoryLinksContainer.appendChild(link);
     });
 }
