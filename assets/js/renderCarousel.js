@@ -106,9 +106,8 @@ function onDragEnd() {
         else moveNext()
     }
 }
-
-track.addEventListener('touchstart', onDragStart)
-track.addEventListener('touchmove', onDragMove)
+track.addEventListener('touchstart', onDragStart, { passive: true })
+track.addEventListener('touchmove', onDragMove, { passive: true })
 track.addEventListener('touchend', onDragEnd)
 
 track.addEventListener('mousedown', onDragStart)
