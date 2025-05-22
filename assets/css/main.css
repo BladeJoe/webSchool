@@ -666,6 +666,8 @@ a {
     height: 420px;
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
+    scrollbar-width: none;
 }
 
 .categories-select {
@@ -687,7 +689,7 @@ a {
 
 .categories button.active {
     font-weight: bold;
-    background: var(--color-background);
+    background: var(--color-white);
 }
 
 .categories button:hover {
@@ -947,6 +949,7 @@ a {
     overflow-x: scroll;
     padding-bottom: 4px;
     height: auto;
+    scrollbar-width: none;
 }
 
 .course-categories ul li button {
@@ -968,12 +971,13 @@ a {
 
 .course-categories ul li button.active {
     font-weight: bold;
-    background: var(--color-background);
+    background: var(--color-link-active);
 }
 
 
 .course-categories ul li button:hover {
-    color: var(--color-link-hover);
+    background: var(--color-link-active);
+    color: var(--color-whitef);
 }
 
 .course-wrapper {
