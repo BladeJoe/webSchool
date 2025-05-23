@@ -1308,6 +1308,7 @@ a {
 
 .course-wrapper-wfilter {
     max-width: 960px;
+    min-height: 1326px;
     display: flex;
     justify-content: start;
     flex-direction: column;

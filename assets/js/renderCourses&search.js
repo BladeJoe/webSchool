@@ -227,39 +227,60 @@ const courseData = [
 ];
 
 
-
 const filterbar = document.querySelector('.filterbar');
 const courseCategories = document.querySelector('.course-categories');
 const courseWrapper = document.querySelector('.course-wrapper');
 let currentPage = 1;
 const itemsPerPage = 8;
+let sortOrder = {};
+// parse helpers
+const parsePrice = str => Number(str.replace(/[^\d]/g, '')) || 0;
+const parseDuration = str => {
+    const m = str.match(/\d+/);
+    return m ? Number(m[0]) : 0;
+};
 
-function renderCourses(coursesToRender) {
+function renderCourses(courses) {
     courseWrapper.innerHTML = '';
     const info = document.querySelector('.total-courses-info');
-    info.innerHTML = coursesToRender.length
-        ? `<h3>Найдено ${coursesToRender.length} курсов</h3>`
+    info.innerHTML = courses.length
+        ? `<h3>Найдено ${courses.length} курсов</h3>`
         : '<h3>Нет курсов в данной категории.</h3>';
-    if (!coursesToRender.length) return;
+    if (!courses.length) return;
 
     const headers = [
-        "Курс", "Школа", "Цена", "Длительность", "Особенности", "Ссылка на курс"
+        { label: "Курс", key: "profession" },
+        { label: "Школа", key: "school" },
+        { label: "Цена", key: "price" },
+        { label: "Длительность", key: "duration" },
+        { label: "Особенности", key: "level" },
+        { label: "Ссылка на курс", key: "availability" }
     ];
-    const courseHeaderWrapper = document.createElement('div');
-    courseHeaderWrapper.className = 'course-header-wrapper';
-    headers.forEach(header => {
+
+    const headerWrapper = document.createElement('div');
+    headerWrapper.className = 'course-header-wrapper';
+    headers.forEach(({ label, key }) => {
         const btn = document.createElement('button');
         btn.className = 'course-col';
-        btn.innerHTML = `${header}<span class="sort-arrow"><span class="up"></span><span class="down"></span></span>`;
-        courseHeaderWrapper.appendChild(btn);
+        btn.dataset.key = key;
+        btn.innerHTML = `${label}<span class="sort-arrow"><span class="up"></span><span class="down"></span></span>`;
+        btn.addEventListener('click', () => {
+            if (sortOrder.key === key) {
+                sortOrder.asc = !sortOrder.asc;
+            } else {
+                sortOrder = { key, asc: true };
+            }
+            applySortAndFilter();
+        });
+        headerWrapper.appendChild(btn);
     });
-    courseWrapper.insertAdjacentElement('afterbegin', courseHeaderWrapper);
+    courseWrapper.appendChild(headerWrapper);
 
     const start = (currentPage - 1) * itemsPerPage;
     const end = start + itemsPerPage;
-    const paginatedCourses = coursesToRender.slice(start, end);
+    const pageItems = courses.slice(start, end);
 
-    paginatedCourses.forEach(course => {
+    pageItems.forEach(course => {
         const div = document.createElement('div');
         div.className = 'course-item';
         div.innerHTML = `
@@ -276,8 +297,8 @@ function renderCourses(coursesToRender) {
                     <p class="monthly-price">от <span class="">${course.monthly_payment.replace('от ', '').replace(' руб./месяц', '')}</span> руб/месяц</p>
                 </div>
                 <div class="time">
-                        <img src="./assets/images/clock.svg" width="17" height="17" alt="clock">
-                        ${course.availability}
+                    <img src="./assets/images/clock.svg" width="17" height="17" alt="clock">
+                    ${course.availability}
                 </div>
                 <div class="details">
                     <p class="small"><img src="./assets/images/calendar.svg" width="12" height="12" alt="calendar"> ${course.level}</p>
@@ -297,227 +318,232 @@ function renderCourses(coursesToRender) {
 
     const paginationWrapper = document.createElement('div');
     paginationWrapper.className = 'pagination-wrapper';
-    const totalPages = Math.ceil(coursesToRender.length / itemsPerPage);
+    const totalPages = Math.ceil(courses.length / itemsPerPage);
     for (let i = 1; i <= totalPages; i++) {
         const pageBtn = document.createElement('button');
         pageBtn.className = 'page-btn';
         if (i === currentPage) pageBtn.classList.add('active');
         pageBtn.textContent = i;
-        pageBtn.addEventListener('click', () => {
+        pageBtn.onclick = () => {
             currentPage = i;
-            renderCourses(coursesToRender);
-        });
+            applySortAndFilter();
+        };
         paginationWrapper.appendChild(pageBtn);
     }
-
     courseWrapper.appendChild(paginationWrapper);
 }
 
 function renderCategories() {
-    const categoriesList = document.createElement('ul');
-    const uniqueCategories = ["Все курсы", ...new Set(courseData.map(course => course.category))];
-
-    uniqueCategories.forEach((cat, i) => {
+    courseCategories.innerHTML = '';
+    const uniqueCats = ["Все курсы", ...new Set(courseData.map(c => c.category))];
+    const ul = document.createElement('ul');
+    uniqueCats.forEach((cat, i) => {
         const li = document.createElement('li');
         const btn = document.createElement('button');
         btn.textContent = cat;
-
         if (i === 0) btn.classList.add('active');
-
-        btn.addEventListener('click', (e) => {
+        btn.onclick = () => {
             document.querySelectorAll('.course-categories button').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            filterCourses(e.target.textContent);
-        });
-
+            currentPage = 1;
+            applySortAndFilter();
+        };
         li.appendChild(btn);
-        categoriesList.appendChild(li);
+        ul.appendChild(li);
     });
-
-    courseCategories.appendChild(categoriesList);
+    courseCategories.appendChild(ul);
 }
 
-function renderSchools() {
-    const container = document.querySelector('.schools-filter')
-    container.innerHTML = ''
-    const schools = [...new Set(courseData.map(c => c.school))]
-    if (!schools.length) return
-    const header = document.createElement('h3')
-    header.className = 'filter-header'
-    header.textContent = 'Школы'
-    container.appendChild(header)
-
-    const ul = document.createElement('ul')
-    schools.forEach(school => {
-        const li = document.createElement('li')
-        const label = document.createElement('label')
-        const checkbox = document.createElement('input')
-        checkbox.type = 'checkbox'
-        checkbox.classList.add("checkbox-reversed")
-        const span = document.createElement('span')
-        span.textContent = school
-        label.appendChild(checkbox)
-        label.appendChild(span)
-        li.appendChild(label)
-        ul.appendChild(li)
-    })
-    container.appendChild(ul)
+function renderCheckboxFilter(containerSelector, title, dataKey) {
+    const container = document.querySelector(containerSelector);
+    container.innerHTML = '';
+    const uniqueItems = [...new Set(courseData.map(c => c[dataKey]))];
+    if (!uniqueItems.length) return;
+    const header = document.createElement('h3');
+    header.className = 'filter-header';
+    header.textContent = title;
+    container.appendChild(header);
+    const ul = document.createElement('ul');
+    uniqueItems.forEach(item => {
+        const li = document.createElement('li');
+        const label = document.createElement('label');
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.classList.add('checkbox-reversed');
+        checkbox.dataset.filterKey = dataKey;
+        label.appendChild(checkbox);
+        const span = document.createElement('span');
+        span.textContent = item;
+        label.appendChild(span);
+        li.appendChild(label);
+        ul.appendChild(li);
+    });
+    container.appendChild(ul);
 }
 
-function renderLevels() {
-    const container = document.querySelector('.level-filter')
-    container.innerHTML = ''
-    const levels = [...new Set(courseData.map(c => c.level))]
-    if (!levels.length) return
-    const header = document.createElement('h3')
-    header.className = 'filter-header'
-    header.textContent = 'Уровень сложности'
-    container.appendChild(header)
-
-    const ul = document.createElement('ul')
-    levels.forEach(school => {
-        const li = document.createElement('li')
-        const label = document.createElement('label')
-        const checkbox = document.createElement('input')
-        checkbox.type = 'checkbox'
-        checkbox.classList.add("checkbox-reversed")
-        const span = document.createElement('span')
-        span.textContent = school
-        label.appendChild(checkbox)
-        label.appendChild(span)
-        li.appendChild(label)
-        ul.appendChild(li)
-    })
-    container.appendChild(ul)
-}
 
 function setupPriceSliders() {
-    const minPriceSlider = document.getElementById('pricemin');
-    const maxPriceSlider = document.getElementById('pricemax');
-    const minPriceInput = document.getElementById('priceminVal');
-    const maxPriceInput = document.getElementById('pricemaxVal');
-    const stepPrice = 1000;
+    const minSlider = document.getElementById('pricemin');
+    const maxSlider = document.getElementById('pricemax');
+    const minInput = document.getElementById('priceminVal');
+    const maxInput = document.getElementById('pricemaxVal');
+    const step = 1000;
 
-    function roundPriceStep(val) {
-        return Math.round(val / stepPrice) * stepPrice;
-    }
+    const roundStep = v => Math.round(v / step) * step;
 
-    function syncPriceMin(val) {
-        val = roundPriceStep(Math.min(parseInt(val), parseInt(maxPriceSlider.value) - stepPrice));
-        minPriceSlider.value = val;
-        minPriceInput.value = val;
-    }
+    const syncMin = val => {
+        val = roundStep(Math.min(Number(val), Number(maxSlider.value) - step));
+        minSlider.value = val;
+        minInput.value = val;
+    };
+    const syncMax = val => {
+        val = roundStep(Math.max(Number(val), Number(minSlider.value) + step));
+        maxSlider.value = val;
+        maxInput.value = val;
+    };
 
-    function syncPriceMax(val) {
-        val = roundPriceStep(Math.max(parseInt(val), parseInt(minPriceSlider.value) + stepPrice));
-        maxPriceSlider.value = val;
-        maxPriceInput.value = val;
-    }
+    minSlider.oninput = e => syncMin(e.target.value);
+    maxSlider.oninput = e => syncMax(e.target.value);
+    minInput.oninput = e => syncMin(e.target.value);
+    maxInput.oninput = e => syncMax(e.target.value);
 
-    minPriceSlider.oninput = e => syncPriceMin(e.target.value);
-    maxPriceSlider.oninput = e => syncPriceMax(e.target.value);
-    minPriceInput.oninput = e => syncPriceMin(e.target.value);
-    maxPriceInput.oninput = e => syncPriceMax(e.target.value);
-
-    syncPriceMin(minPriceSlider.value);
-    syncPriceMax(maxPriceSlider.value);
+    syncMin(minSlider.value);
+    syncMax(maxSlider.value);
 }
 
 function setupDurationSliders() {
-    const minDurationSlider = document.getElementById('durationMin');
-    const maxDurationSlider = document.getElementById('durationMax');
-    const minDurationInput = document.getElementById('durationMinVal');
-    const maxDurationInput = document.getElementById('durationMaxVal');
-    const stepDuration = 1;
+    const minSlider = document.getElementById('durationMin');
+    const maxSlider = document.getElementById('durationMax');
+    const minInput = document.getElementById('durationMinVal');
+    const maxInput = document.getElementById('durationMaxVal');
+    const step = 1;
 
-    function roundDurationStep(val) {
-        return Math.round(val / stepDuration) * stepDuration;
-    }
+    const roundStep = v => Math.round(v / step) * step;
 
-    function syncDurationMin(val) {
-        val = roundDurationStep(Math.min(parseInt(val), parseInt(maxDurationSlider.value) - stepDuration));
-        minDurationSlider.value = val;
-        minDurationInput.value = val;
-    }
+    const syncMin = val => {
+        val = roundStep(Math.min(Number(val), Number(maxSlider.value) - step));
+        minSlider.value = val;
+        minInput.value = val;
+    };
+    const syncMax = val => {
+        val = roundStep(Math.max(Number(val), Number(minSlider.value) + step));
+        maxSlider.value = val;
+        maxInput.value = val;
+    };
 
-    function syncDurationMax(val) {
-        val = roundDurationStep(Math.max(parseInt(val), parseInt(minDurationSlider.value) + stepDuration));
-        maxDurationSlider.value = val;
-        maxDurationInput.value = val;
-    }
+    minSlider.oninput = e => syncMin(e.target.value);
+    maxSlider.oninput = e => syncMax(e.target.value);
+    minInput.oninput = e => syncMin(e.target.value);
+    maxInput.oninput = e => syncMax(e.target.value);
 
-    minDurationSlider.oninput = e => syncDurationMin(e.target.value);
-    maxDurationSlider.oninput = e => syncDurationMax(e.target.value);
-    minDurationInput.oninput = e => syncDurationMin(e.target.value);
-    maxDurationInput.oninput = e => syncDurationMax(e.target.value);
-
-    syncDurationMin(minDurationSlider.value);
-    syncDurationMax(maxDurationSlider.value);
+    syncMin(minSlider.value);
+    syncMax(maxSlider.value);
 }
-function filterCourses(category) {
+
+function getFilters() {
+    const category = document.querySelector('.course-categories button.active')?.textContent || "Все курсы";
+
     const minPrice = parseInt(document.getElementById('priceminVal').value.replace(/\s/g, '')) || 0;
     const maxPrice = parseInt(document.getElementById('pricemaxVal').value.replace(/\s/g, '')) || Infinity;
+
     const minDuration = parseInt(document.getElementById('durationMinVal').value) || 0;
     const maxDuration = parseInt(document.getElementById('durationMaxVal').value) || Infinity;
 
-    const paymentFilter = document.querySelector('input[name="payment"]:checked');
-    const payment = paymentFilter ? paymentFilter.value : null;
+    const payment = document.querySelector('input[name="payment"]:checked')?.value || 'all';
 
-    const checkedLevels = [...document.querySelectorAll('.level-filter input[type="checkbox"]:checked')].map(i => i.nextElementSibling.textContent);
-    const checkedSchools = [...document.querySelectorAll('.schools-filter input[type="checkbox"]:checked')].map(i => i.nextElementSibling.textContent);
+    const levelChecked = [...document.querySelectorAll('.level-filter input[type="checkbox"]:checked')].map(i => i.nextSibling.textContent.trim());
+    const schoolChecked = [...document.querySelectorAll('.schools-filter input[type="checkbox"]:checked')].map(i => i.nextSibling.textContent.trim());
 
-    const internshipChecked = document.querySelector('input[type="checkbox"][data-filter="internship"]')?.checked;
-    const diplomaChecked = document.querySelector('input[type="checkbox"][data-filter="diploma"]')?.checked;
+    const internshipChecked = document.querySelector('input[data-filter="internship"]')?.checked;
+    const diplomaChecked = document.querySelector('input[data-filter="diploma"]')?.checked;
 
-    let filteredData = category === "Все курсы"
-        ? courseData
-        : courseData.filter(course => course.category === category);
+    return { category, minPrice, maxPrice, minDuration, maxDuration, payment, levelChecked, schoolChecked, internshipChecked, diplomaChecked };
+}
 
-    filteredData = filteredData.filter(course => {
-        const priceNum = parseInt(course.discounted_price.replace(/\D/g, ''));
+function applySortAndFilter() {
+    const {
+        category,
+        minPrice,
+        maxPrice,
+        minDuration,
+        maxDuration,
+        payment,
+        levelChecked,
+        schoolChecked,
+        internshipChecked,
+        diplomaChecked
+    } = getFilters();
+
+    let filtered = category === "Все курсы" ? [...courseData] : courseData.filter(c => c.category === category);
+
+    filtered = filtered.filter(c => {
+        const priceNum = parsePrice(c.discounted_price);
         if (priceNum < minPrice || priceNum > maxPrice) return false;
-
         if (payment === "paid" && priceNum === 0) return false;
         if (payment === "free" && priceNum > 0) return false;
-
-        if (checkedLevels.length && !checkedLevels.includes(course.level)) return false;
-        if (checkedSchools.length && !checkedSchools.includes(course.school)) return false;
-
-        if (internshipChecked && course.internship.toLowerCase() !== 'стажировка') return false;
-        if (diplomaChecked && course.diploma.toLowerCase() !== 'диплом') return false;
-
-        const durationMonths = parseInt(course.duration);
-        if (isNaN(durationMonths) || durationMonths < minDuration || durationMonths > maxDuration) return false;
-
+        if (levelChecked.length && !levelChecked.includes(c.level)) return false;
+        if (schoolChecked.length && !schoolChecked.includes(c.school)) return false;
+        if (internshipChecked && c.internship.toLowerCase() !== 'стажировка') return false;
+        if (diplomaChecked && c.diploma.toLowerCase() !== 'диплом') return false;
+        const dur = parseDuration(c.duration);
+        if (dur < minDuration || dur > maxDuration) return false;
         return true;
     });
 
-    filteredData.sort((a, b) => {
-        const priceA = parseInt(a.price.replace(/\D/g, ''));
-        const priceB = parseInt(b.price.replace(/\D/g, ''));
-        return priceA - priceB;
-    });
-    currentPage = 1;
+    if (sortOrder.key) {
+        filtered.sort((a, b) => {
+            let valA = a[sortOrder.key];
+            let valB = b[sortOrder.key];
 
-    renderCourses(filteredData);
+            if (sortOrder.key === 'price' || sortOrder.key === 'discounted_price') {
+                valA = parsePrice(valA);
+                valB = parsePrice(valB);
+            } else if (sortOrder.key === 'duration') {
+                valA = parseDuration(valA);
+                valB = parseDuration(valB);
+            } else if (sortOrder.key === 'rating' || sortOrder.key === 'reviews_count') {
+                valA = Number(valA) || 0;
+                valB = Number(valB) || 0;
+            } else {
+                valA = valA.toString().toLowerCase();
+                valB = valB.toString().toLowerCase();
+            }
+
+            if (valA < valB) return sortOrder.asc ? -1 : 1;
+            if (valA > valB) return sortOrder.asc ? 1 : -1;
+            return 0;
+        });
+    }
+
+    renderCourses(filtered);
 }
 
+function setupFilterEvents() {
+    filterbar.addEventListener('change', () => {
+        currentPage = 1;
+        applySortAndFilter();
+    });
+}
 
+function setupPaymentRadioButtons() {
+    const radios = document.querySelectorAll('input[name="payment"]');
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            currentPage = 1;
+            applySortAndFilter();
+        });
+    });
+}
 
-
-
-document.addEventListener('DOMContentLoaded', () => {
+function setup() {
     renderCategories();
-    renderCourses(courseData);
+    renderCheckboxFilter('.level-filter', 'Уровень', 'level');
+    renderCheckboxFilter('.schools-filter', 'Школы', 'school');
     setupPriceSliders();
-    renderSchools();
-    renderLevels()
     setupDurationSliders();
-    filterCourses("Все курсы");
-});
+    setupFilterEvents();
+    setupPaymentRadioButtons();
+    applySortAndFilter();
+}
 
-filterbar.addEventListener('change', () => {
-    const activeBtn = document.querySelector('.course-categories button.active');
-    const category = activeBtn ? activeBtn.textContent : "Все курсы";
-    filterCourses(category);
-});
+setup();
