@@ -1,0 +1,13 @@
+<svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g filter="url(#a)">
+    <rect x="2" y="12" width="2" height="4" rx="1" fill="#2A2A2A"/>
+  </g>
+  <g filter="url(#b)">
+    <rect x="8" y="8" width="2" height="8
+      " rx="1" fill="#C4C4C4"/>
+  </g>
+  <g filter="url(#c)">
+    <rect x="15" width="2"  y="1"  height="15
+      " rx="1" fill="#C4C4C4"/>
+  </g> 
+</svg>

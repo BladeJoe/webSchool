@@ -1,4 +1,4 @@
-const data = {
+const categoryData = {
     "Программирование": [
         "Все курсы по программированию", "Python-разработка", "Web-разработка", "Мобильная разработка",
         "JavaScript-разработка", "Java-разработка", "Разработка игр", "Создание сайтов",
@@ -16,33 +16,58 @@ const data = {
     "Контент-маркетинг": ["Копирайтинг", "SMM", "Продюсирование"]
 };
 
-const categoryList = document.getElementById("categoryList");
-const subcategoryList = document.getElementById("subcategoryList");
+const categoryButtonsContainer = document.getElementById("categoryList");
+const subcategoryLinksContainer = document.getElementById("subcategoryList");
 
-function renderCategories() {
-    Object.keys(data).forEach((category, index) => {
-        const btn = document.createElement("button");
-        btn.textContent = category;
-        if (index === 0) btn.classList.add("active");
-        btn.addEventListener("click", () => {
+function renderCategoryButtons() {
+    const categorySelect = document.createElement("select");
+    categorySelect.classList.add("categories-select");
+    categorySelect.id = "categorySelect";
+
+    Object.keys(categoryData).forEach((category, index) => {
+        const button = document.createElement("button");
+        button.textContent = category;
+        if (index === 0) button.classList.add("active");
+
+        button.addEventListener("click", () => {
             document.querySelectorAll("#categoryList button").forEach(b => b.classList.remove("active"));
-            btn.classList.add("active");
-            renderSubcategories(data[category]);
+            button.classList.add("active");
+            renderSubcategoryLinks(categoryData[category]);
+            categorySelect.value = category;
         });
-        categoryList.appendChild(btn);
+
+        categoryButtonsContainer.appendChild(button);
+
+        const option = document.createElement("option");
+        option.value = category;
+        option.textContent = category;
+        categorySelect.appendChild(option);
+    });
+
+    categorySelect.addEventListener("change", () => {
+        document.querySelectorAll("#categoryList button").forEach(button => {
+            button.classList.toggle("active", button.textContent === categorySelect.value);
+        });
+        renderSubcategoryLinks(categoryData[categorySelect.value]);
+    });
+
+    const label = document.createElement("label");
+    label.htmlFor = categorySelect.id;
+    label.appendChild(categorySelect);
+
+    categoryButtonsContainer.parentNode.insertBefore(label, categoryButtonsContainer.nextSibling);
+}
+
+
+function renderSubcategoryLinks(subcategories) {
+    subcategoryLinksContainer.innerHTML = "";
+    subcategories.forEach(subcategory => {
+        const link = document.createElement("a");
+        link.innerHTML = `${subcategory} <span>&#8250;</span>`;
+        link.href = "#";
+        subcategoryLinksContainer.appendChild(link);
     });
 }
 
-function renderSubcategories(items) {
-    subcategoryList.innerHTML = "";
-    items.forEach(item => {
-        const el = document.createElement("a");
-        el.innerHTML = `${item} <span>&#8250;</span>`;
-        el.href = encodeURIComponent(item) + ".html";
-
-        subcategoryList.appendChild(el);
-    });
-}
-
-renderCategories();
-renderSubcategories(data[Object.keys(data)[0]]); 
+renderCategoryButtons();
+renderSubcategoryLinks(categoryData[Object.keys(categoryData)[0]]);
