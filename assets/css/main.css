@@ -1734,7 +1734,7 @@ input[type=range]::-moz-range-thumb {
     text-decoration: none;
     color: #000;
     border-radius: 4px;
-    white-space: nowrap;
+    white-space: wrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
