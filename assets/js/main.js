@@ -1,23 +1,13 @@
-const checkbox = document.getElementById('navbar-checkbox');
+const checkbox = document.getElementById('navbar-checkbox')
+checkbox.onchange = () => document.body.classList.toggle('no-scroll', checkbox.checked)
 
-checkbox.addEventListener('change', () => {
-    const isActive = checkbox.checked;
-    document.body.classList.toggle('no-scroll', isActive);
-});
-
-
-
-document.querySelectorAll('img').forEach(img => {
-    img.ondragstart = () => false;
-});
+document.querySelectorAll('img').forEach(img => img.ondragstart = () => false)
 
 document.querySelectorAll('.footer-column h3').forEach(header => {
-    header.addEventListener('click', () => {
-        const list = header.nextElementSibling;
-        list.classList.toggle('collapsed');
-        const toggleIcon = header.querySelector('.footer-sign');
-        if (toggleIcon) {
-            toggleIcon.textContent = list.classList.contains('collapsed') ? '+' : '–';
-        }
-    });
-});
+    header.onclick = () => {
+        const list = header.nextElementSibling
+        list.classList.toggle('collapsed')
+        const icon = header.querySelector('.footer-sign')
+        if (icon) icon.textContent = list.classList.contains('collapsed') ? '+' : '–'
+    }
+})

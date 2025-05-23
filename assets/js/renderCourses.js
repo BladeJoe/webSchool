@@ -6,12 +6,13 @@ const courseData = [
         "level": "Начальный",
         "internship": "Стажировка",
         "diploma": "Диплом",
-        "profession": "Веб-разработчик",
+        "profession": "Веб разработчик",
         "rating": 4.5,
         "discounted_price": "66 800 руб",
         "availability": "В любое время",
         "reviews_count": 58,
-        "monthly_payment": "от 4 745 руб./месяц"
+        "monthly_payment": "от 4 745 руб./месяц",
+        "category": "Программирование"
     },
     {
         "school": "Netology",
@@ -20,12 +21,13 @@ const courseData = [
         "level": "Средний",
         "internship": "Нет",
         "diploma": "Сертификат",
-        "profession": "Python-разработчик с нуля",
+        "profession": "Python разработчик с нуля",
         "rating": 4.7,
         "discounted_price": "96 000 руб",
         "availability": "Запуск группы",
         "reviews_count": 120,
-        "monthly_payment": "от 8 000 руб./месяц"
+        "monthly_payment": "от 8 000 руб./месяц",
+        "category": "Контент-маркетинг"
     },
     {
         "school": "GeekBrains",
@@ -34,12 +36,13 @@ const courseData = [
         "level": "Продвинутый",
         "internship": "Стажировка",
         "diploma": "Диплом",
-        "profession": "Fullstack-разработчик",
+        "profession": "Fullstack разработчик",
         "rating": 4.6,
         "discounted_price": "135 000 руб",
         "availability": "В любое время",
         "reviews_count": 95,
-        "monthly_payment": "от 15 000 руб./месяц"
+        "monthly_payment": "от 15 000 руб./месяц",
+        "category": "Управление"
     },
     {
         "school": "SkillFactory",
@@ -53,7 +56,23 @@ const courseData = [
         "discounted_price": "72 000 руб",
         "availability": "В любое время",
         "reviews_count": 70,
-        "monthly_payment": "от 6 000 руб./месяц"
+        "monthly_payment": "от 6 000 руб./месяц",
+        "category": "Маркетинг"
+    },
+    {
+        "school": "Skillbox",
+        "price": "85 000 руб",
+        "duration": "3 месяца",
+        "level": "Начальный",
+        "internship": "Стажировка",
+        "diploma": "Диплом",
+        "profession": "Веб разработчик",
+        "rating": 4.5,
+        "discounted_price": "66 800 руб",
+        "availability": "В любое время",
+        "reviews_count": 58,
+        "monthly_payment": "от 4 745 руб./месяц",
+        "category": "Программирование"
     },
     {
         "school": "Contented",
@@ -67,7 +86,8 @@ const courseData = [
         "discounted_price": "88 000 руб",
         "availability": "Запуск группы",
         "reviews_count": 150,
-        "monthly_payment": "от 7 333 руб./месяц"
+        "monthly_payment": "от 7 333 руб./месяц",
+        "category": "Аналитика"
     },
     {
         "school": "Yandex",
@@ -81,90 +101,109 @@ const courseData = [
         "discounted_price": "162 000 руб",
         "availability": "В любое время",
         "reviews_count": 200,
-        "monthly_payment": "от 18 000 руб./месяц"
-    },
-    {
-        "school": "Netology",
-        "price": "75 000 руб",
-        "duration": "2 месяца",
-        "level": "Начальный",
-        "internship": "Нет",
-        "diploma": "Сертификат",
-        "profession": "Основы интернет-маркетинга",
-        "rating": 4.3,
-        "discounted_price": "60 000 руб",
-        "availability": "В любое время",
-        "reviews_count": 80,
-        "monthly_payment": "от 5 000 руб./месяц"
+        "monthly_payment": "от 18 000 руб./месяц",
+        "category": "Дизайн"
     }
 ];
-const categories = [
-    "Программирование",
-    "Маркетинг",
-    "Дизайн",
-    "Аналитика",
-    "Финансы",
-    "Управление",
-    "Контент-маркетинг"
-];
-const courseCategories = document.querySelector('.course-categories')
-const courseWrapper = document.querySelector('.course-wrapper')
 
-const categoriesList = document.createElement('ul')
+const courseCategories = document.querySelector('.course-categories');
+const courseWrapper = document.querySelector('.course-wrapper');
 
-categories.forEach((cat, i) => {
-    const li = document.createElement('li')
-    const btn = document.createElement('button')
-    btn.textContent = cat
+function renderCourses(coursesToRender) {
+    courseWrapper.innerHTML = '';
 
-    if (i === 0) btn.classList.add('active')
+    if (!coursesToRender.length) return;
 
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.course-categories button').forEach(b => b.classList.remove('active'))
-        btn.classList.add('active')
-        // TODO: filter/render
-    })
+    const headers = [
+        { label: "Курс", key: "profession" },
+        { label: "Школа", key: "school" },
+        { label: "Цена", key: "price" },
+        { label: "Длительность", key: "duration" },
+        { label: "Особенности", key: "level" },
+        { label: "Ссылка на курс", key: "availability" }
+    ];
 
-    li.appendChild(btn)
-    categoriesList.appendChild(li)
-})
+    const headerWrapper = document.createElement('div');
+    headerWrapper.className = 'course-header-wrapper';
+    headers.forEach(({ label, key }) => {
+        const div = document.createElement('div');
+        div.className = 'course-col';
+        div.dataset.key = key;
+        div.innerHTML = `${label}`;
+        headerWrapper.appendChild(div);
+    });
+    courseWrapper.appendChild(headerWrapper);
 
-courseCategories.appendChild(categoriesList)
-
-
-courseData.forEach(course => {
-    const div = document.createElement('div')
-    div.className = 'course-item'
-    div.innerHTML = `
-        <h4 class="jobtitle">${course.profession}
-        </h4 >
-        <div class="square-wrapper">
-            <div>
-                <p class="inner-title">${course.school}</p>
-                <p class="rating small">⭐ <span>${course.rating}</span></p>
-                <p class="review">Отзывы о школе<span> ${course.reviews_count}</span></p>
-            </div>
-            <div>
-                <p class="old-price">(${course.price})</p>
-                <p class="current-price">${course.discounted_price.replace(' руб', '')} <span class="currency">руб</span></p>
-                <p class="monthly-price">от <span class="">${course.monthly_payment.replace('от ', '').replace(' руб./месяц', '')}</span> руб/месяц</p>
-            </div>
-            <div class="time">  
+    coursesToRender.forEach(course => {
+        const div = document.createElement('div');
+        div.className = 'course-item';
+        div.innerHTML = `
+            <h4 class="jobtitle">${course.profession}</h4>
+            <div class="square-wrapper">
+                <div>
+                    <p class="inner-title">${course.school}</p>
+                    <p class="rating small">⭐ <span>${course.rating}</span></p>
+                    <p class="review">Отзывы о школе<span> ${course.reviews_count}</span></p>
+                </div>
+                <div>
+                    <p class="old-price">(${course.price})</p>
+                    <p class="current-price">${course.discounted_price.replace(' руб', '')} <span class="currency">руб</span></p>
+                    <p class="monthly-price">от <span class="">${course.monthly_payment.replace('от ', '').replace(' руб./месяц', '')}</span> руб/месяц</p>
+                </div>
+                <div class="time">
                     <img src="./assets/images/clock.svg" width="17" height="17" alt="clock">
-                    В любое время 
+                    ${course.availability}
+                </div>
+                <div class="details">
+                    <p class="small"><img src="./assets/images/calendar.svg" width="12" height="12" alt="calendar"> ${course.level}</p>
+                    <p class="small"><img src="./assets/images/level.svg" width="12" height="12" alt="level"> ${course.duration}</p>
+                    <p class="small"><img src="./assets/images/suitcase.svg" width="12" height="12" alt="suitcase"> ${course.internship}</p>
+                    <p class="small"><img src="./assets/images/diploma.svg" width="12" height="12" alt="diploma"> ${course.diploma}</p>
+                </div>
             </div>
-            <div class="details">
-                <p class="small"><img src="./assets/images/calendar.svg" width="12" height="12" alt="calendar"> ${course.level}</p>
-                <p class="small"><img src="./assets/images/level.svg" width="12" height="12" alt="level"> ${course.duration}</p>
-                <p class="small"><img src="./assets/images/suitcase.svg" width="12" height="12" alt="suitcase"> ${course.internship}</p>
-                <p class="small"><img src="./assets/images/diploma.svg" width="12" height="12" alt="diploma"> ${course.diploma}</p>
+            <div class="inner-wrapper">
+                <button class="btn active">На сайт курса</button>
+                <button class="btn">Подробнее</button>
+                <a href="#course" class="compare"><img src="./assets/images/compare.svg" width="12" height="12" alt="compare">Добавить к сравнению</a>
             </div>
-        </div>
-        <div class="inner-wrapper">
-            <button class="btn active">На сайт курса</button>
-            <button class="btn">Подробнее</button>
-            <a href="#course" class="compare"><img src="./assets/images/compare.svg" width="12" height="12" alt="compare">Добавить к сравнению</a>
-        </div>
-    `
-    courseWrapper.appendChild(div)
-})
+        `;
+        courseWrapper.appendChild(div);
+    });
+}
+
+function renderCategories() {
+    courseCategories.innerHTML = '';
+    const uniqueCats = ["Все курсы", ...new Set(courseData.map(c => c.category))];
+    const ul = document.createElement('ul');
+    uniqueCats.forEach((cat, i) => {
+        const li = document.createElement('li');
+        const btn = document.createElement('button');
+        btn.textContent = cat;
+        if (i === 0) btn.classList.add('active');
+        btn.onclick = () => {
+            document.querySelectorAll('.course-categories button').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderCoursesByCategory(cat);
+        };
+        li.appendChild(btn);
+        ul.appendChild(li);
+    });
+    courseCategories.appendChild(ul);
+}
+
+function renderCoursesByCategory(category) {
+    let coursesToDisplay = [];
+    if (category === "Все курсы") {
+        coursesToDisplay = [...courseData];
+    } else {
+        coursesToDisplay = courseData.filter(c => c.category === category);
+    }
+    renderCourses(coursesToDisplay);
+}
+
+function setup() {
+    renderCategories();
+    renderCoursesByCategory("Все курсы");
+}
+
+setup();
