@@ -1788,6 +1788,11 @@ input[type=range]::-moz-range-thumb {
 
 
 /* breadcrubms*/
+.breadcrumbs {
+    background-color: var(--color-white);
+
+}
+
 .breadcrumbs-link {
     color: var(--color-link);
     text-decoration: underline;
@@ -1795,6 +1800,13 @@ input[type=range]::-moz-range-thumb {
 
 .breadcrumbs-current {
     color: var(--color-link-current);
+}
+
+/* page desc  */
+
+.page-desc {
+    background-color: var(--color-white);
+
 }
 
 /*   blog */
