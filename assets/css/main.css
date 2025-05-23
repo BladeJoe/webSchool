@@ -492,7 +492,7 @@ button {
 }
 
 .subcategories {
-  background: var(--background);
+  background: #fff;
   column-count: 3;
   column-gap: auto;
   padding: 10px;
