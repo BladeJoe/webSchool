@@ -1795,8 +1795,7 @@ input[type=range] {
     }
 
     .subcategories {
-        column-count: 1;
-        column-gap: auto;
+        column-count: 1 !important;
         padding: 10px;
         width: 100%;
     }
@@ -1906,7 +1905,6 @@ input[type=range] {
 
     .subcategories {
         column-count: 2;
-        column-gap: auto;
         padding: 10px;
         width: 100%;
     }
