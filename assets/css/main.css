@@ -1343,6 +1343,7 @@ a {
     color: #444;
 }
 
+
 .filter-header {
     font-size: 14px;
     padding: 19px 21px;
@@ -1373,7 +1374,7 @@ input[type=number] {
     cursor: pointer;
     word-wrap: break-word;
     padding: 4px;
-    max-width: 285px;
+    max-width: 500px;
     display: flex;
     align-items: center;
     font-size: 14px;
@@ -1564,7 +1565,6 @@ input[type=range]::-moz-range-thumb {
 
 .filter-button-mobile {
     display: none;
-    margin-right: 100px;
 }
 
 .sort-arrow {
@@ -1622,6 +1622,7 @@ input[type=range]::-moz-range-thumb {
 
 @media (max-width: 1280px) {
     .course-header {
+        justify-content: space-around;
         padding: 30px 0;
     }
 
@@ -1643,8 +1644,17 @@ input[type=range]::-moz-range-thumb {
         z-index: 9999;
     }
 
-    .filterbar.filterActive .filters {
+    .filter-title {
+        border-bottom: 0;
+    }
 
+    .filter-title img {
+        display: none;
+    }
+
+    .filterbar.filterActive .filters {
+        max-width: 375px;
+        width: 100%;
         background: white !important;
         height: 100vh;
 
@@ -1656,20 +1666,22 @@ input[type=range]::-moz-range-thumb {
 
     .filter-button-mobile.filterActive {
         position: fixed;
-        top: 0;
-        right: 0;
-        padding: 0;
-        padding: 20px 0;
+        top: 6px;
+        right: 6px;
+        padding: 4px;
         display: block;
-        font-size: 3rem;
-        font-weight: 100;
+        font-size: 2rem;
         margin-right: 0;
         border: 0;
         z-index: 10000;
+        width: 50px;
         cursor: pointer;
     }
 
 
+    .total-courses-info {
+        margin-left: 0;
+    }
 
     .filterbar {
         display: none;
@@ -1681,7 +1693,8 @@ input[type=range]::-moz-range-thumb {
     }
 
     .course-header {
-        max-width: none;
+        max-width: 960px;
+        margin: 0 auto;
     }
 
     .course-header-wrapper {
@@ -2048,7 +2061,7 @@ input[type=range]::-moz-range-thumb {
         display: none;
     }
 
-    .footer-column h4 {
+    .footer-column h3 {
         width: 100%;
         display: flex;
         justify-content: space-between;
