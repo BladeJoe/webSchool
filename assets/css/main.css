@@ -398,6 +398,12 @@ button {
   height: 254px;
   margin-bottom: 12px;
 }
+.advantage .wrapper {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
 .advantage .inner-wrapper {
   display: flex;
   flex-direction: row;
